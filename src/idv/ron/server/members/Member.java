@@ -1,68 +1,100 @@
 package idv.ron.server.members;
 
+import java.sql.Timestamp;
+
 public class Member {
-	private String userId;
-	private String password;
-	private String name;
-	private String email;
-	private String phone;
-	private String address;
-
-	public Member(String userId, String password, String name, String email,
-			String phone, String address) {
-		this.userId = userId;
-		this.password = password;
-		this.name = name;
-		this.email = email;
-		this.phone = phone;
-		this.address = address;
+	private static final long serialVersionUID = 1L;
+	Integer user_id=null;	
+	String user_cellphone=null;
+	String user_password=null;
+	String user_name=null;
+	String user_email=null;
+	String user_avatar=null;
+	Timestamp user_create_time=null;
+	String user_status=null;
+	String user_identity=null;
+	Integer user_store=null;
+	
+	
+	
+	public Member(Integer user_id, String user_cellphone, String user_password, String user_name, String user_email,
+			String user_avatar, Timestamp user_create_time, String user_status, String user_identity,
+			Integer user_store) {
+		super();
+		this.user_id = user_id;
+		this.user_cellphone = user_cellphone;
+		this.user_password = user_password;
+		this.user_name = user_name;
+		this.user_email = user_email;
+		this.user_avatar = user_avatar;
+		this.user_create_time = user_create_time;
+		this.user_status = user_status;
+		this.user_identity = user_identity;
+		this.user_store = user_store;
 	}
-
-	public String getUserId() {
-		return userId;
+	public Integer getUser_id() {
+		return user_id;
 	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUser_id(Integer user_id) {
+		this.user_id = user_id;
 	}
-
-	public String getPassword() {
-		return password;
+	public String getUser_cellphone() {
+		return user_cellphone;
 	}
-
-	public void setPassword(String password) {
-		this.password = password;
+	public void setUser_cellphone(String user_cellphone) {
+		this.user_cellphone = user_cellphone;
 	}
-
-	public String getName() {
-		return name;
+	public String getUser_password() {
+		return user_password;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setUser_password(String user_password) {
+		this.user_password = user_password;
 	}
-
-	public String getEmail() {
-		return email;
+	public String getUser_name() {
+		return user_name;
 	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
-
-	public String getPhone() {
-		return phone;
+	public String getUser_email() {
+		return user_email;
 	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setUser_email(String user_email) {
+		this.user_email = user_email;
 	}
-
-	public String getAddress() {
-		return address;
+	public String getUser_avatar() {
+		return user_avatar;
 	}
-
-	public void setAddress(String address) {
-		this.address = address;
+	public void setUser_avatar(String user_avatar) {
+		this.user_avatar = user_avatar;
 	}
+	public Timestamp getUser_create_time() {
+		return user_create_time;
+	}
+	public void setUser_create_time(Timestamp user_create_time) {
+		this.user_create_time = user_create_time;
+	}
+	public String getUser_status() {
+		return user_status;
+	}
+	public void setUser_status(String user_status) {
+		this.user_status = user_status;
+	}
+	public String getUser_identity() {
+		return user_identity;
+	}
+	public void setUser_identity(String user_identity) {
+		this.user_identity = user_identity;
+	}
+	public Integer getUser_store() {
+		return user_store;
+	}
+	public void setUser_store(Integer user_store) {
+		this.user_store = user_store;
+	}
+	
+	
+	
+	
+	
 }

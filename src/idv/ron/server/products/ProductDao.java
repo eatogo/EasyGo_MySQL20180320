@@ -3,10 +3,10 @@ package idv.ron.server.products;
 import java.util.List;
 
 public interface ProductDao {
-	int insert(Product product);
-	int update(Product product);
+	int insert(Foods food);
+	int update(Foods food);
 	int delete(int id);
-	Product findById(int id);
-	List<Product> getAll();
+	Foods findById(int id);
+	List<Foods> getAll();
 	byte[] getImage(int id);
 }

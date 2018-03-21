@@ -36,8 +36,8 @@ public class OrderDaoMySqlImpl implements OrderDao {
 		Connection conn = null;
 		PreparedStatement psMaster = null;
 		PreparedStatement psDetail = null;
-		String sqlMaster = "INSERT INTO OrderMaster(userId) VALUES(?);";
-		String sqlDetail = "INSERT INTO OrderDetail(orderId, productId, quantity) VALUES(?, ?, ?);";
+		String sqlMaster = "INSERT INTO orders(order_user) VALUES(?);";
+		String sqlDetail = "INSERT INTO order_details(order_Id, food_Id, quantity) VALUES(?, ?, ?);";
 		int orderId = -1;
 
 		try {
@@ -56,7 +56,7 @@ public class OrderDaoMySqlImpl implements OrderDao {
 				orderId = rs.getInt(1);
 			}
 			for (OrderProduct orderProduct : cart) {
-				int productId = orderProduct.getId();
+				int productId = orderProduct.getFood_id();
 				int quantity = orderProduct.getQuantity();
 				psDetail = conn.prepareStatement(sqlDetail);
 				psDetail.setInt(1, orderId);
@@ -194,13 +194,11 @@ public class OrderDaoMySqlImpl implements OrderDao {
 			ResultSet rs = ps.executeQuery();
 			List<OrderProduct> orderProductList = new ArrayList<OrderProduct>();
 			while (rs.next()) {
-				int id = rs.getInt(1);
+				Integer id = rs.getInt(1);
 				String name = rs.getString(2);
-				double price = rs.getDouble(3);
-				String description = rs.getString(4);
-				int quantity = rs.getInt(5);
-				OrderProduct orderProduct = new OrderProduct(id, name, price,
-						description, quantity);
+				Integer price = rs.getInt(3);
+				Integer quantity = rs.getInt(4);
+				OrderProduct orderProduct = new OrderProduct(id, name, price,quantity);
 				orderProductList.add(orderProduct);
 			}
 			OrderDetail orderDetail = new OrderDetail(orderId, orderProductList);

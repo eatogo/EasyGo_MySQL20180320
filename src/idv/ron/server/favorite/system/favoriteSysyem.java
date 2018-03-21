@@ -4,6 +4,7 @@ import java.awt.print.Book;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,89 +17,78 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
+import idv.ron.server.members.Member;
+import idv.ron.server.members.MemberDao;
+import idv.ron.server.members.MemberDaoMySqlImpl;
 
+import com.google.gson.*;
 @WebServlet("/favoriteSysyem")
 public class favoriteSysyem extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		System.out.println("hello");
 		request.setCharacterEncoding("text/html; charset=UTF-8");
-		String info=request.getParameter("name");//APP 帳戶的名子 (Input標籤的 name)
 		
-		if(info == null) {
-			System.out.println("please Sign in first");
-		} 
-		
-		String acceptjson="";
-		
-		BufferedReader br = new BufferedReader(new  InputStreamReader(
-				request.getInputStream(),"utf-8"));
-		StringBuffer sb = new StringBuffer("");
-		String temp;
-		while((temp=br.readLine())!=null ) {
-			sb.append(temp);
-			
+		Gson gson = new Gson();
+		BufferedReader br = request.getReader();
+		StringBuilder jsonIn = new StringBuilder();
+		String line = null;
+		while ((line = br.readLine()) != null) {
+			jsonIn.append(line);
 		}
+		System.out.println(jsonIn);
 			
 		br.close();
-//		acceptjson=sb.toString();
-//		if(acceptjson !="") {
-//			 JSONObject jo = JSONObject.fromObject(acceptjson);  
-//             JSONArray imgArray = jo.getJSONArray("Images");  
-//             JSONArray infArray = jo.getJSONArray("Info");
-//             
-//             for(int i = 0 ; imgArray.size(); i++) {
-//            	  JSONObject imgObject = JSONObject.fromObject(imgArray  
-//                          .get(i));  
-//                  System.out.println(imgObject.get("PartsImg"));  
-//             }
-//             JSONObject infObject = JSONObject.fromObject(infArray.get(0));  
-//             System.out.println(infObject.get("favorite_id"));  
-//             System.out.println(infObject.get("favorite_food"));  
-//             System.out.println(infObject.get("favorite_user"));  
-//         
-//             System.out.println(jo.toString());  
+//	
 		
+//		
+		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),
+				JsonObject.class);
+		FavoritesDao Dao = new FavoritesDaoimpl();
+		String action = jsonObject.get("action").getAsString();
+		System.out.println("action: " + action);
+		if (action.equals("Favoriteinsert")) {
+			String user_cellphone = jsonObject.get("user_cellphone").getAsString();
+			int favorite_food = jsonObject.get("favorite_food").getAsInt();
+			System.out.println("userId: " + user_cellphone);
+			writeText(response, String.valueOf(Dao.QueryUserId(user_cellphone)));
+			FavoritesBean bean = new FavoritesBean();
+			String user_id = bean.getUser_id();
+			System.out.println(bean);
+			writeText(response, String.valueOf( Dao.insertMember(bean)));
+		} else if (action.equals("delete")) {
+			
+			//writeText(response, String.valueOf(memberDao.update(bean)));
+		}
+	
+		//for (FavoritesBean fs : list) {
+		//System.out.println(fs.toString());	
+		//	favorites.show();
+		//}
 	
 
-
-		// List to JSON
-//		jsonStr = new JSONArray("???").toString();
-//		System.out.println("List to JSON: " + jsonStr);
-		// JSON to List
-		
-		
-		String jsonStr = "{['favorite_id':'1','favorite_food':'1','favorite_user':'1'],['favorite_id':'2','favorite_food':'2','favorite_user':'2'],['favorite_id':'3','favorite_food':'3','favorite_user':'3']}";
-		List<Favorites> list = new ArrayList<Favorites>();
-		JSONArray jsonArray = new JSONArray(jsonStr);
-		for (int i = 0; i < jsonArray.length(); i++) {
-			JSONObject json_favorites = jsonArray.getJSONObject(i);
-			int favorite_id = json_favorites.getInt("favorite_id");
-			int favorite_food = json_favorites.getInt("favorite_food");
-			int favorite_user = json_favorites.getInt("favorite_user");
-			Favorites favorites = new Favorites(1,2,3);
-			list.add(favorites);
-		}
-		for (Favorites fs : list) {
-		System.out.println(fs.toString());	
-		//	favorites.show();
-		}
-		System.out.println();
-
 	response.getWriter().write("");
-		}
-		
-		
 	}
+		
+		
+	
+	private void writeText(HttpServletResponse response, String outText)
+			throws IOException {
+		response.setContentType(CONTENT_TYPE);
+		PrintWriter out = response.getWriter();
+		System.out.println("outText: " + outText);
+		out.print(outText);
+	}
+}
 		
 		
 

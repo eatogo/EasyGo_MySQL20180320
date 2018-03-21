@@ -17,8 +17,7 @@ public class MemberServlet extends HttpServlet {
 	private final static String CONTENT_TYPE = "text/html; charset=UTF-8";
 
 	// the request method for Android is set to be Post
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		Gson gson = new Gson();
 		BufferedReader br = request.getReader();
@@ -27,43 +26,37 @@ public class MemberServlet extends HttpServlet {
 		while ((line = br.readLine()) != null) {
 			jsonIn.append(line);
 		}
-		JsonObject jsonObject = gson.fromJson(jsonIn.toString(),
-				JsonObject.class);
+		JsonObject jsonObject = gson.fromJson(jsonIn.toString(), JsonObject.class);
 		MemberDao memberDao = new MemberDaoMySqlImpl();
 		String action = jsonObject.get("action").getAsString();
 		System.out.println("action: " + action);
 		if (action.equals("memberExist")) {
-			String userId = jsonObject.get("userId").getAsString();
+			String user_cellphone = jsonObject.get("user_cellphone").getAsString();
 			String password = jsonObject.get("password").getAsString();
-			System.out.println("userId: " + userId + "; password: " + password);
-			writeText(response,
-					String.valueOf(memberDao.memberExist(userId, password)));
+			System.out.println("userId: " + user_cellphone + "; password: " + password);
+			writeText(response, String.valueOf(memberDao.memberExist(user_cellphone, password)));
 		} else if (action.equals("memberIdExist")) {
-			String userId = jsonObject.get("userId").getAsString();
-			writeText(response, String.valueOf(memberDao.memberIdExist(userId)));
+			String user_cellphone = jsonObject.get("user_cellphone").getAsString();
+			writeText(response, String.valueOf(memberDao.memberIdExist(user_cellphone)));
 		} else if (action.equals("findById")) {
-			String userId = jsonObject.get("userId").getAsString();
-			Member member = memberDao.findById(userId);
+			String user_cellphone = jsonObject.get("user_cellphone").getAsString();
+			Member member = memberDao.findById(user_cellphone);
 			writeText(response, gson.toJson(member));
 		} else if (action.equals("insert")) {
-			Member member = gson.fromJson(jsonObject.get("member")
-					.getAsString(), Member.class);
+			Member member = gson.fromJson(jsonObject.get("member").getAsString(), Member.class);
 			writeText(response, String.valueOf(memberDao.insert(member)));
 		} else if (action.equals("update")) {
-			Member member = gson.fromJson(jsonObject.get("member")
-					.getAsString(), Member.class);
+			Member member = gson.fromJson(jsonObject.get("member").getAsString(), Member.class);
 			writeText(response, String.valueOf(memberDao.update(member)));
 		}
 	}
 
 	// just return order information (general page's request method is Get)
-	public void doGet(HttpServletRequest rq, HttpServletResponse rp)
-			throws ServletException, IOException {
+	public void doGet(HttpServletRequest rq, HttpServletResponse rp) throws ServletException, IOException {
 		doPost(rq, rp);
 	}
 
-	private void writeText(HttpServletResponse response, String outText)
-			throws IOException {
+	private void writeText(HttpServletResponse response, String outText) throws IOException {
 		response.setContentType(CONTENT_TYPE);
 		PrintWriter out = response.getWriter();
 		System.out.println("outText: " + outText);

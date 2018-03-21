@@ -21,12 +21,12 @@ public class ProductDaoMySqlImpl implements ProductDao {
 	}
 
 	@Override
-	public int insert(Product product) {
+	public int insert(Foods product) {
 		return 0;
 	}
 
 	@Override
-	public int update(Product product) {
+	public int update(Foods product) {
 		return 0;
 	}
 
@@ -37,8 +37,7 @@ public class ProductDaoMySqlImpl implements ProductDao {
 
 	@Override
 	public byte[] getImage(int id) {
-		String sql = "SELECT image FROM Product, Spot "
-				+ "WHERE Product.spotId = Spot.id AND Product.id = ?;";
+		String sql = "SELECT food_pic_mdpi FROM Foods WHERE food_id=?;";
 		Connection connection = null;
 		PreparedStatement ps = null;
 		byte[] image = null;
@@ -71,9 +70,9 @@ public class ProductDaoMySqlImpl implements ProductDao {
 	}
 
 	@Override
-	public Product findById(int id) {
-		String sql = "SELECT name, price, description "
-				+ "FROM Product WHERE id = ?;";
+	public Foods findById(int id) {
+		String sql = "SELECT food_name, food_price "
+				+ "FROM Foods WHERE food_id = ?;";
 		Connection conn = null;
 		PreparedStatement ps = null;
 		try {
@@ -84,9 +83,8 @@ public class ProductDaoMySqlImpl implements ProductDao {
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				String name = rs.getString(1);
-				double price = rs.getDouble(2);
-				String description = rs.getString(3);
-				Product product = new Product(id, name, price, description);
+				Integer price = rs.getInt(2);
+				Foods product = new Foods(id, name, price);
 				return product;
 			}
 		} catch (SQLException e) {
@@ -107,23 +105,24 @@ public class ProductDaoMySqlImpl implements ProductDao {
 	}
 
 	@Override
-	public List<Product> getAll() {
-		String sql = "SELECT id, name, price, description FROM Product;";
+	public List<Foods> getAll() {
 		Connection conn = null;
 		PreparedStatement ps = null;
+		
 		try {
+//			String sql = "SELECT food_id, food_name, food_price FROM Foods;";
+			String sql = "SELECT food_id, food_name, food_price FROM Foods;";
 			conn = DriverManager.getConnection(Common.URL, Common.USER,
 					Common.PASSWORD);
 			ps = conn.prepareStatement(sql);
 			ResultSet rs = ps.executeQuery();
-			List<Product> productList = new ArrayList<Product>();
+			List<Foods> productList = new ArrayList<Foods>();
 			while (rs.next()) {
 				int id = rs.getInt(1);
 				String name = rs.getString(2);
-				double price = rs.getDouble(3);
-				String description = rs.getString(4);
-				Product product = new Product(id, name, price, description);
-				productList.add(product);
+				Integer price = rs.getInt(3);
+				Foods food = new Foods(id, name, price);
+				productList.add(food);
 			}
 			return productList;
 		} catch (SQLException e) {

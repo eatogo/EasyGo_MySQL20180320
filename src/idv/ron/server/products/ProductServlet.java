@@ -39,7 +39,7 @@ public class ProductServlet extends HttpServlet {
 		System.out.println("action: " + action);
 
 		if (action.equals("getAll")) {
-			List<Product> products = productDao.getAll();
+			List<Foods> products = productDao.getAll();
 			writeText(response, gson.toJson(products));
 		} else if (action.equals("getImage")) {
 			OutputStream os = response.getOutputStream();
@@ -60,7 +60,7 @@ public class ProductServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ProductDao productDao = new ProductDaoMySqlImpl();
-		List<Product> products = productDao.getAll();
+		List<Foods> products = productDao.getAll();
 		writeText(response, new Gson().toJson(products));
 	}
 
