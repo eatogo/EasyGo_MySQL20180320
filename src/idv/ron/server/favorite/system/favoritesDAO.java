@@ -5,5 +5,6 @@ public interface FavoritesDao {
 	 FavoritesBean insertMember(FavoritesBean bean);
 	int delete(int favorite_id);
 	FavoritesBean QueryUserId(String user_cellphone);
+	FavoritesBean QueryAllFavo(String user_cellphone);
 	
 }

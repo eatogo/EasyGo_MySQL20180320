@@ -5,10 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
 import idv.ron.server.main.Common;
+import idv.ron.server.products.Foods;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -209,6 +212,65 @@ public class FavoritesDaoimpl implements FavoritesDao{
 		}
 		return result;
 		}
+
+private static final String SELECT_Favo_BY_USER_ID="SELECT a.food_id, a.food_name, a.food_price "
+		+ "FROM foods  where favorite_user=?;";	
+@Override
+	public FavoritesBean QueryAllFavo(String favorite_user) {
+		FavoritesBean result = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rest = null;
+		try {
+			conn = DriverManager.getConnection(Common.URL, Common.USER,
+					Common.PASSWORD);
+			stmt = conn.prepareStatement(SELECT_Favo_BY_USER_ID);
+			stmt.setString(1,favorite_user);
+			rest= stmt.executeQuery();
+			List<FavoritesBean> productList = new ArrayList<FavoritesBean>();
+			while(rest.next()) {
+				int id = rest.getInt("food_id");
+				String name =(rest.getString("food_name"));
+				Integer price=(rest.getInt("food_price"));
+			FavoritesBean bean = new FavoritesBean();
+			bean.setFavorite_id(id);
+			bean.setFavorite_name(name);
+			bean.setFavorite_price(price);
+			productList.add(bean);
+			System.out.println(bean);
+				
+			}
+		}catch (SQLException e) {
+			e.getMessage();
+		}finally{
+			if (rest != null) {
+				try {
+					rest.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return result;
+		}
+
+
+
+
 }
 
 

@@ -4,25 +4,23 @@ public class FavoritesBean {
 	private int favorite_id;
 	private int favorite_food;
 	private int favorite_user;
+	private int favorite_price;
+	private String favorite_name;
 	private String user_id;
 	private String user_cellphone;
 	
 	public FavoritesBean() {
-
 		super();
 	}
 
-	public FavoritesBean(int favorite_id, String user_id) {
-		super();
-		this.favorite_id = favorite_id;
-		this.user_id = user_id;
-	}
-
-	public FavoritesBean(int favorite_id, int favorite_food, int favorite_user, String user_id, String user_cellphone) {
+	public FavoritesBean(int favorite_id, int favorite_food, int favorite_user, int favorite_price,
+			String favorite_name, String user_id, String user_cellphone) {
 		super();
 		this.favorite_id = favorite_id;
 		this.favorite_food = favorite_food;
 		this.favorite_user = favorite_user;
+		this.favorite_price = favorite_price;
+		this.favorite_name = favorite_name;
 		this.user_id = user_id;
 		this.user_cellphone = user_cellphone;
 	}
@@ -51,6 +49,22 @@ public class FavoritesBean {
 		this.favorite_user = favorite_user;
 	}
 
+	public int getFavorite_price() {
+		return favorite_price;
+	}
+
+	public void setFavorite_price(int favorite_price) {
+		this.favorite_price = favorite_price;
+	}
+
+	public String getFavorite_name() {
+		return favorite_name;
+	}
+
+	public void setFavorite_name(String favorite_name) {
+		this.favorite_name = favorite_name;
+	}
+
 	public String getUser_id() {
 		return user_id;
 	}
@@ -65,12 +79,6 @@ public class FavoritesBean {
 
 	public void setUser_cellphone(String user_cellphone) {
 		this.user_cellphone = user_cellphone;
-	}
-
-	@Override
-	public String toString() {
-		return "FavoritesBean [favorite_id=" + favorite_id + ", favorite_food=" + favorite_food + ", favorite_user="
-				+ favorite_user + ", user_id=" + user_id + ", user_cellphone=" + user_cellphone + "]";
 	}
 
 	

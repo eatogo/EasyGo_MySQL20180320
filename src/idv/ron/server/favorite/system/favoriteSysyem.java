@@ -63,10 +63,11 @@ public class favoriteSysyem extends HttpServlet {
 			FavoritesBean bean = new FavoritesBean();
 			bean=Dao.QueryUserId(user_cellphone);
 			bean.setFavorite_food(favorite_food);
-			//String user_id = bean.getUser_id();
+			String user_id = bean.getUser_id();
 			//System.out.println("user_id " + user_id);
 			System.out.println(bean);
-			writeText(response, String.valueOf( Dao.insertMember(bean)));
+			 Dao.insertMember(bean);
+			 writeText(response,String.valueOf( Dao.QueryAllFavo(user_id)));
 		} else if (action.equals("delete")) {
 			
 			//writeText(response, String.valueOf(memberDao.update(bean)));
