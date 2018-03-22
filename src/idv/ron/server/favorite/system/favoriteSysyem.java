@@ -36,7 +36,7 @@ public class favoriteSysyem extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("hello");
-		request.setCharacterEncoding("text/html; charset=UTF-8");
+		request.setCharacterEncoding("UTF-8");
 		
 		Gson gson = new Gson();
 		BufferedReader br = request.getReader();
@@ -59,10 +59,12 @@ public class favoriteSysyem extends HttpServlet {
 		if (action.equals("Favoriteinsert")) {
 			String user_cellphone = jsonObject.get("user_cellphone").getAsString();
 			int favorite_food = jsonObject.get("favorite_food").getAsInt();
-			System.out.println("userId: " + user_cellphone);
-			writeText(response, String.valueOf(Dao.QueryUserId(user_cellphone)));
+			System.out.println("user_cellphone: " + user_cellphone);
 			FavoritesBean bean = new FavoritesBean();
-			String user_id = bean.getUser_id();
+			bean=Dao.QueryUserId(user_cellphone);
+			bean.setFavorite_food(favorite_food);
+			//String user_id = bean.getUser_id();
+			//System.out.println("user_id " + user_id);
 			System.out.println(bean);
 			writeText(response, String.valueOf( Dao.insertMember(bean)));
 		} else if (action.equals("delete")) {
